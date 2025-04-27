@@ -1,0 +1,53 @@
+output_dir: data  # Folder for generated data
+duration: 3.0  # Simulation duration in seconds
+
+
+# Low freq source (e.g. command positions)
+low_freq_hz: 30.0  # Nominal frequency for command data
+low_freq_irregularity: 0.00  # Timestamp variation in seconds
+low_freq_skip_prob: 0.0  # Probability of skipping a frame
+angle_amplitude: 15.0  # Sine wave amplitude in degrees
+angle_freq: 0.5  # Sine wave frequency in Hz
+low_freq_noise_std: 0.0  # Noise standard deviation for angles
+
+
+# Network transport
+delay_mean: 0.1  # Mean network delay in seconds
+
+jitter_std: 0.05  # Jitter standard deviation in seconds
+jitter_start_time: 1.0  # Start time for applying jitter (seconds)
+jitter_end_time: 2.0    # End time for applying jitter (seconds)
+
+extra_delay_start_time: 1.0  # Start time for extra delay (seconds)
+extra_delay_end_time: 2.0    # End time for extra delay (seconds)
+extra_delay_amount: 0.0     # Additional delay during the extra delay period (seconds)
+
+loss_prob: 0.0  # Packet loss probability
+
+
+# High freq result (e.g. motor actual positions)
+high_freq_hz: 1000.0  # Frequency of motor servo
+
+motor_time_constant: 0.02   # Simple PD control
+pd_control_kp: 700.0    # More realistic PD Control
+pd_control_kd: 15.0
+
+physical_errors:    # Inject physical disturbances
+  hit_wall:
+    start_time: 0.0  # Start of wall collision
+    end_time: 0.0  # End of collision
+    max_angle: 5.0  # Maximum angle during collision
+  heavy_object:
+    start_time: 0.0
+    end_time: 0.0
+    alpha_factor: 0.2  # Reduced response factor
+  overheat:
+    start_time: 0.0
+    end_time: 0.0
+    torque_reduction: 0.9
+    probability: 0.1  # Chance of noise spike
+    noise_std: 0.2  # Noise magnitude
+
+crazy_errors: #crazy data changes
+  flip: false    # flip time order
+  negate: false  # *-1

@@ -1,0 +1,10 @@
+
+input_dir: data  # Folder for loading time series data
+output_dir: data  # Folder for saving results
+
+resampler:
+  target_freq_hz: 100  # Resampling frequency
+  interpolation_method: linear  # Interpolation method
+
+max_shift: 100
+
