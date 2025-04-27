@@ -7,12 +7,11 @@ from src.alignment import align_data
 from src.visualization import plot_raw_data, plot_alignment
 
 def main():
-    
+
     # Step 1: Generate data
     print("Generating time series data...")
-    generate_data(Config("configs/config_data_gen_default.yaml"))
     generate_data(Config("configs/config_data_gen_1_delay.yaml"))
-    
+
     # Step 2: Run alignment for each method
     config = Config('configs/config_alignment_default.yaml')
     data_folder = config.get('input_dir')
@@ -31,13 +30,13 @@ def main():
             json.dump(result, f)
         print(f"Result for '{method}' saved to '{file_path}'")
         print(f"  score={result['score']:.4f}, shift={result['global_shift']:.4f}, jitter={result['jitter']:.4f}, runtime={result['runtime']:.3f} seconds")
-    
+
     # Step 3: Visualize results
     print("Generating visualizations...")
     # Plot raw data
     save_raw_path = os.path.join(data_folder, 'raw_data.png')
     plot_raw_data(data_folder, save_path=save_raw_path)
-    
+
     # Plot alignment results for each method
     for method in methods:
         save_align_path = os.path.join(data_folder, f'alignment_{method}.png')
