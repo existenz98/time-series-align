@@ -7,18 +7,24 @@ It aligns two time series with different sampling frequencies:
 
 2. **high-frequency** data (e.g., 1000 Hz from CSP motor command or actual motor feedback)
 
-Implemented 4 alignment methods like
-1) Dynamic Time Warping (**DTW**) from scratch
-2) Dynamic Time Warping (**DTW**) using **fastdtw** lib
-3) **Naive Cross-Correlation** from scratch
-4) **FFT** based Cross-Correlation lib
+The project
 
-The project simulates realistic data generation: applies **network effects** and **physical disturbances**
+1. Generates sim data with **network effects** , **motor pd** and **physical disturbances**
 
+2. Implemented 4 alignment methods:
+    1. **Naive Cross-Correlation** from scratch
+    2. **FFT** based Cross-Correlation using **scipy.signal** lib
+    3. Dynamic Time Warping (**DTW**) from scratch
+    4. Dynamic Time Warping (**DTW**) using **fastdtw** lib
+    
 The main.py will **1) generate** sim data,  **2) aligns** the series, and **3) visualizes** the results.
 
-## Experiments and Results
-[Experiments and Results](experiments_results.md)
+
+![Example alignment result from 4 methods](docs/alignments.png)
+
+
+## Alignment methods and Results
+[Alignment methods and Results](experiments_results.md)
 
 
 ## Features
@@ -53,7 +59,6 @@ Implemented 4 alignment methods:
   - `cc_naive`: **Brute-force cross-correlation** to find the best global shift.
   - `cc_fft`: **FFT-based cross-correlation** for faster computation.
 - **Features**:
-  - Resamples both series to a common frequency (e.g., 200 Hz) using linear interpolation (configurable).
   - Computes alignment metrics: **global latency**, **jitter** (local latency, only available with DTW methods), and **matching score** (correlation coefficient between aligned series).
   - Saves alignment results (path, global shift, jitter, score, **runtime**) to JSON files for later visualization.
 
@@ -99,6 +104,3 @@ def main():
 * **Visualizations: Saved as png files in data/**
 
 
-## Experiments and Results
-
-[Experiments and Results](experiments_results.md)

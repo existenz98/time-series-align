@@ -20,7 +20,7 @@ jitter_end_time: 3.0    # End time for applying jitter (seconds)
 
 extra_delay_start_time: 1.0  # Start time for extra delay (seconds)
 extra_delay_end_time: 2.0    # End time for extra delay (seconds)
-extra_delay_amount: 0.1     # Additional delay during the extra delay period (seconds)
+extra_delay_amount: 0.15     # Additional delay during the extra delay period (seconds)
 
 loss_prob: 0.0  # Packet loss probability
 

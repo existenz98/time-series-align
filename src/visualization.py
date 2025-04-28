@@ -57,7 +57,8 @@ def plot_alignment(data_folder='data', method='dtw_library', save_path=None, fig
         alignment_result = json.load(f)
 
     # Create a figure with three subplots stacked vertically.
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=figsize, sharex=True)
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=figsize, sharex=True, 
+                                        gridspec_kw={'height_ratios': [3, 1, 1]})
 
     # --- Subplot 1: Time Series and Alignment Path ---
     # time series data
