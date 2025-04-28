@@ -10,7 +10,7 @@ def main():
 
     # Step 1: Generate data
     print("Generating time series data...")
-    generate_data(Config("configs/config_data_gen_0_base.yaml"))
+    generate_data(Config("configs/config_data_gen_8_all.yaml"))
 
     # Step 2: Run alignment for each method
     config = Config('configs/config_alignment_default.yaml')

@@ -92,6 +92,9 @@ extra_delay_amount: 0.15     # Additional delay during the extra delay period (s
 
 <img src="docs/1_cc_error.png" alt="CC" width="400px">
 
+4. CC's score is 0.974, may **faile to match**.
+DTW's score is 1.0, will **match successfully**.
+
 ## Demo 2 Random jitter
 On top of average latency 100ms, add **random jitter of 50ms from 1sec to 2sec period**
 
@@ -138,6 +141,140 @@ crazy_errors: #crazy data changes
 
 
 
+## Demo 4 Moving heavy objects
+
+Simulate from 1.0sec to 2.0 sec the robot is holding a heavy object, reduced it's ability to follow command.
+
+config_data_gen_4_heavy.yaml
+```yaml
+physical_errors:    # Inject physical disturbances
+  heavy_object:
+    start_time: 1.0
+    end_time: 2.0
+    alpha_factor: 0.1  # Reduced response factor
+```
+
+### data:
+<img src="docs/4_raw_data.png" alt="Raw Data" width="400px">
+
+### DTW vs CC
+<img src="docs/4_alignments.png" alt="DTW vs CC" width="600px">
+
+#### Both DTW and CC works
+* Both have very high 'matching score', can **identify match successfully**.
+* DTW attributed the difference to both **time domain error** and **spatial domain error**.  Is **more resonable** explanation of the physical process.
 
 
+
+
+## Demo 5 Hit Wall
+
+Simulate from 0sec to 1.0 sec the robot will hit a movement limit of 10 degrees (e.g. hit a wall).
+
+config_data_gen_5_hit.yaml
+```yaml
+physical_errors:    # Inject physical disturbances
+  hit_wall:
+    start_time: 0.0  # Start of wall collision
+    end_time: 1.0  # End of collision
+    max_angle: 10.0  # Maximum angle during collision
+```
+
+### data:
+<img src="docs/5_raw_data.png" alt="Raw Data" width="400px">
+
+### DTW vs CC
+<img src="docs/5_alignments.png" alt="DTW vs CC" width="600px">
+
+#### Both DTW and CC works
+* Both have high 'matching score', can **identify match successfully**.
+* DTW attributed the difference to both **time domain error** and **spatial domain error**.  Is **more resonable** explanation of the physical process.
+
+
+
+## Demo 6 Motor Overheat
+
+Simulate from 0sec to 5sec the motor is overheat, causing **reduced torque** and spikes.
+
+**(the simulation is not realistic, it added spikes to position directly... instead of to toreque)**
+
+config_data_gen_6_heat.yaml
+```yaml
+physical_errors:    # Inject physical disturbances
+  overheat:
+    start_time: 1.0
+    end_time: 5.0
+    torque_reduction: 0.1
+    probability: 0.1  # Chance of noise spike
+    noise_std: 0.2  # Noise magnitude
+```
+
+### data:
+<img src="docs/6_raw_data.png" alt="Raw Data" width="400px">
+
+### DTW vs CC
+<img src="docs/6_alignments.png" alt="DTW vs CC" width="600px">
+
+#### Only DTW works
+* DTW still have high 'matching score' of 0.992, can **identify match successfully**.
+* CC's match score is only 0.962, will **faile to match**.
+
+
+
+## Demo 7 Source Error
+
+Simulate the **low frequency command** have lots of issues:
+
+* Unstable frequency (e.g. if source is camera based mocap or ai model)
+* Skipped frames
+* Noise in motion position
+
+config_data_gen_7_source.yaml
+```yaml
+low_freq_irregularity: 0.02  # Timestamp variation in seconds
+low_freq_skip_prob: 0.02  # Probability of skipping a frame
+low_freq_noise_std: 0.2  # Noise standard deviation for angles
+```
+
+### data:
+<img src="docs/7_raw_data.png" alt="Raw Data" width="400px">
+
+Due to noisy command, motor no longer able to move smoothly.
+
+### DTW vs CC
+<img src="docs/7_alignments.png" alt="DTW vs CC" width="600px">
+
+#### Both DTW and CC works
+* Have high 'matching score' can **identify match successfully**.
+
+
+
+
+## Demo 8 All Error
+
+`config_data_gen_8_all.yaml`
+Simulate all kinds of issues:
+
+* Source command isues (non constant fps, position noise, dropped frames)
+* Network issues (jitter, lost packet, )
+* Physical disturbances (hit wall, heavy object, overheat)
+
+### data:
+<img src="docs/8_raw_data.png" alt="Raw Data" width="400px">
+
+### DTW vs CC
+<img src="docs/8_alignments.png" alt="DTW vs CC" width="600px">
+
+#### Only DTW works
+* DTW still have high 'matching score' of 0.994, can **identify match successfully**.
+* CC's match score is only 0.971, will **faile to match**.
+
+
+# Overall
+
+
+| Method      | 0 Simple     | 1 Delay     | 2 Jitter   | 3 Adversal  | 4 Heavy     | 5 Hit       | 6 Overheat    | 7 Source   | 8 All      |
+|-------------|--------------|-------------|------------|-------------|-------------|-------------|---------------|------------|------------|
+| CC          | Y            | N           | Y-         | Y           | Y           | Y           | N             | Y          | N          |
+| DTW         | Y            | **Y**       | **Y+**     | Y           | Y           | Y           | **Y**         | Y          | **Y**      |
 
