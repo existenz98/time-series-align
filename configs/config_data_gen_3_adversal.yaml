@@ -49,5 +49,5 @@ physical_errors:    # Inject physical disturbances
     noise_std: 0.2  # Noise magnitude
 
 crazy_errors: #crazy data changes
-  flip: false    # flip time order
+  flip: true    # flip time order
   negate: false  # *-1
